@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using BlogServer.Data;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +8,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+// Application DbContext configuration section
+builder.Services.AddDbContext<ApplicationDbContext>(
+	options => options.UseSqlite(@"DataSource=test.db"));
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
