@@ -38,12 +38,28 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Customer>().HasData(
             new Customer
             {
-                Id = 344,
-                FirstName = "Joey",
-                LastName = "Vico",
-                Address = "Calle Arenal 1",
+                Id = 11111,
+                FirstName = "Bradley",
+                LastName = "Cooper",
+                Address = null,
                 Phone = null
-            }
+            },
+			new Customer
+        	{
+            	Id = 22222,
+            	FirstName = "Sonoya",
+            	LastName = "Mizuno",
+            	Address = null,
+            	Phone = null
+        	},
+        	new Customer
+        	{
+            	Id = 33333,
+            	FirstName = "John",
+            	LastName = "Wick",
+            	Address = null,
+            	Phone = null
+        	}
         );
     }
 }
