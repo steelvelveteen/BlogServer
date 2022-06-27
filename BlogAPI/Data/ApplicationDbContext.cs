@@ -9,8 +9,9 @@ public class ApplicationDbContext : DbContext
 	}
 
 	public DbSet<TestModel> TestModels { get; set; } = null!;
+    public DbSet<Customer> Customers { get; set; } = null!;
 
-	protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
 		// base.OnModelCreating(modelBuilder);
 		modelBuilder.Entity<TestModel>().HasData(
@@ -33,5 +34,16 @@ public class ApplicationDbContext : DbContext
 				TestModelOtherProperty = "Some tres property name"
 			}
 		);
-	}
+
+        modelBuilder.Entity<Customer>().HasData(
+            new Customer
+            {
+                Id = 344,
+                FirstName = "Joey",
+                LastName = "Vico",
+                Address = "Calle Arenal 1",
+                Phone = null
+            }
+        );
+    }
 }
