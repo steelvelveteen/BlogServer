@@ -12,7 +12,6 @@ public class CustomerController : ControllerBase
 	public CustomerController(ApplicationDbContext dbContext)
 	{
 		_dbContext = dbContext;
-
 	}
 
 	[HttpGet]
@@ -22,5 +21,4 @@ public class CustomerController : ControllerBase
 		var result = await _dbContext.Customers.ToListAsync();
 		return Ok(result);
 	}
-
 }
