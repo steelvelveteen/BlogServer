@@ -72,6 +72,8 @@ public class CustomerController : ControllerBase
 	[HttpPost]
 	public async Task<ActionResult<Customer>> Post(Customer customer)
 	{
+		var customerInDb = await _dbContext.Customers.FindAsync(customer.Id);
+		if (customerInDb != null) return Conflict("Customer already exists in db.");
 		_dbContext.Customers.Add(customer);
 		await _dbContext.SaveChangesAsync();
 		return Ok(customer);
