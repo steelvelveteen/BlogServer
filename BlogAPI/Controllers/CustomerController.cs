@@ -27,6 +27,8 @@ public class CustomerController : ControllerBase
 	public async Task<ActionResult<Customer>> Get(int Id)
 	{
 		var customer = await _dbContext.Customers.FindAsync(Id);
+		if (customer == null) return NotFound("Customer not found");
+
 		return Ok(customer);
 	}
 
