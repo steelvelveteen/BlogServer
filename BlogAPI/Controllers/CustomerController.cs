@@ -1,4 +1,5 @@
 using System.Net;
+using AutoMapper;
 using BlogServer.Data;
 using BlogServer.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -11,9 +12,11 @@ namespace BlogAPI.Controllers;
 public class CustomerController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
-	public CustomerController(ApplicationDbContext dbContext)
+	private readonly IMapper _mapper;
+	public CustomerController(ApplicationDbContext dbContext, IMapper mapper)
 	{
 		_dbContext = dbContext;
+		_mapper = mapper;
 	}
 
 	[HttpGet]
@@ -42,11 +45,7 @@ public class CustomerController : ControllerBase
 		}
 		else
 		{
-			customer.Id = c.Id;
-			customer.FirstName = c.FirstName;
-			customer.LastName = c.LastName;
-			customer.Address = c.Address;
-			customer.Phone = c.Phone;
+			_mapper.Map<Customer, Customer>(c, customer);
 		}
 
 		await _dbContext.SaveChangesAsync();

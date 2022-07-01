@@ -1,12 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using BlogServer.Data;
 using Serilog;
+using BlogAPI.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
 // Application DbContext configuration section
