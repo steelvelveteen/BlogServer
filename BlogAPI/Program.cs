@@ -13,22 +13,22 @@ builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 // Application DbContext configuration section
 builder.Services.AddDbContext<ApplicationDbContext>(
-	options => options.UseSqlite(@"DataSource=test.db"));
+    options => options.UseSqlite(@"DataSource=test.db"));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Serilog
 builder.Host.UseSerilog((ctx, lc) =>
-	lc.WriteTo.Console()
+    lc.WriteTo.Console()
 );
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-	app.UseSwagger();
-	app.UseSwaggerUI();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
