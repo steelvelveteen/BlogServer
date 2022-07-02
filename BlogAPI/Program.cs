@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using BlogServer.Data;
 using Serilog;
 using BlogAPI.Data;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +17,18 @@ builder.Services.AddDbContext<ApplicationDbContext>(
 	options => options.UseSqlite(@"DataSource=test.db"));
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+// Configuration for Swagger
+builder.Services.AddSwaggerGen(options =>
+{
+	options.SwaggerDoc("v1", new OpenApiInfo
+	{
+		Version = "v1",
+		Title = "Blog API",
+		Description = "Although it's names as a Blog API it's primary purpose is to serve as a full server base for teaching and for my own personal use in future projects",
+		TermsOfService = new Uri("https://example.com/terms")
+	});
+});
 
 // Serilog
 builder.Host.UseSerilog((ctx, lc) =>
