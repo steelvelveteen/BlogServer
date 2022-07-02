@@ -3,6 +3,7 @@ using BlogServer.Data;
 using Serilog;
 using BlogAPI.Data;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,9 +26,13 @@ builder.Services.AddSwaggerGen(options =>
 	{
 		Version = "v1",
 		Title = "Blog API",
-		Description = "Although it's names as a Blog API it's primary purpose is to serve as a full server base for teaching and for my own personal use in future projects",
+		Description = "Although it's named as a Blog API it's primary purpose is to serve as a full server base for teaching and for my own personal use in future projects",
 		TermsOfService = new Uri("https://example.com/terms")
 	});
+
+	var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+	options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+
 });
 
 // Serilog
