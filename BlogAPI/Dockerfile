@@ -1,4 +1,5 @@
 # docker build --no-cache -t blogapidock:v1 -f ./BlogAPI/Dockerfile . ##
+# docker run -it --rm -p 8080:80 blogapidock:v1 ##
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-focal AS base
 WORKDIR /app
 EXPOSE 80
