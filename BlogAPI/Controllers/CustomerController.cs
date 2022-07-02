@@ -83,7 +83,7 @@ public class CustomerController : ControllerBase
 	/// <summary>
 	/// Deletes a specific Customer
 	/// </summary>
-	/// <param name="Id"></param>
+	/// <param name="Id">The Id of the customer to delete from db.</param>
 	/// <returns>Ok</returns>
 	/// <response code="200">Returns ok containing string</response>
 	/// <response code="404">If the customer is not found in the db in the first place</response>
