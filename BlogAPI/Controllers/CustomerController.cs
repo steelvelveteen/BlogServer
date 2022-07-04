@@ -122,6 +122,7 @@ public class CustomerController : ControllerBase
 		if (customerInDb != null) return Conflict("Customer already exists in db.");
 		_dbContext.Customers.Add(customer);
 		await _dbContext.SaveChangesAsync();
+		// 201 return CreatedAtAction();
 		return Ok(customer);
 	}
 }
