@@ -95,7 +95,6 @@ public class CustomerController : ControllerBase
 		var customer = await _dbContext.Customers.FindAsync(Id);
 		if (customer == null)
 		{
-
 			return NotFound("Customer not found.");
 		}
 		else
