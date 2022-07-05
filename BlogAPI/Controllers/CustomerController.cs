@@ -92,7 +92,7 @@ public class CustomerController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> Delete([Required] int Id)
 	{
-		var customer = await _dbContext.Customers.FindAsync(Id);
+        var customer = await _dbContext.Customers.FindAsync(Id);
 		if (customer == null)
 		{
 			return NotFound("Customer not found.");
