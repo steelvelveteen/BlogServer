@@ -10,7 +10,6 @@ public class ApplicationDbContext : DbContext
 	}
 
 	public DbSet<Customer> Customers { get; set; } = null!;
-	public DbSet<Product> Products { get; set; } = null!;
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
@@ -38,15 +37,6 @@ public class ApplicationDbContext : DbContext
 				LastName = "Wick",
 				Address = null,
 				Phone = null
-			}
-		);
-
-		modelBuilder.Entity<Product>().HasData(
-			new Product
-			{
-				Id = 901,
-				Name = "Vorkwerk Thermomix",
-				Price = 3500
 			}
 		);
 	}
