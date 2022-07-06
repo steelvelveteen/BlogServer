@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using BlogServer.Data;
-using Serilog;
 using BlogAPI.Data;
+using Serilog;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 
@@ -15,7 +14,8 @@ builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 // Application DbContext configuration section
 builder.Services.AddDbContext<ApplicationDbContext>(
-	options => options.UseSqlite(@"DataSource=test.db"));
+	// options => options.UseSqlite(@"DataSource=test.db"));
+	options => options.UseNpgsql(builder.Configuration.GetConnectionString("BlogApiConnectionString")));
 
 builder.Services.AddEndpointsApiExplorer();
 
@@ -56,13 +56,13 @@ app.MapControllers();
 
 using (var scope = app.Services.CreateScope())
 {
-    var services = scope.ServiceProvider;
+	var services = scope.ServiceProvider;
 
-    var context = services.GetRequiredService<ApplicationDbContext>();
-    if (context.Database.GetPendingMigrations().Any())
-    {
-        context.Database.Migrate();
-    }
+	var context = services.GetRequiredService<ApplicationDbContext>();
+	if (context.Database.GetPendingMigrations().Any())
+	{
+		context.Database.Migrate();
+	}
 }
 
 app.Run();

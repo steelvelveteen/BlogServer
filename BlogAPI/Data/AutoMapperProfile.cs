@@ -1,5 +1,5 @@
 using AutoMapper;
-using BlogServer.Models;
+using BlogAPI.Models;
 
 namespace BlogAPI.Data;
 

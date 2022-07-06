@@ -1,8 +1,7 @@
 using BlogAPI.Models;
-using BlogServer.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace BlogServer.Data;
+namespace BlogAPI.Data;
 public class ApplicationDbContext : DbContext
 {
 	public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
@@ -35,6 +34,22 @@ public class ApplicationDbContext : DbContext
 				Id = 33333,
 				FirstName = "John",
 				LastName = "Wick",
+				Address = null,
+				Phone = null
+			},
+			new Customer
+			{
+				Id = 99999,
+				FirstName = "Mary Elise",
+				LastName = "Windstead",
+				Address = "154 Road, NYC 90454",
+				Phone = null
+			},
+			new Customer
+			{
+				Id = 66777,
+				FirstName = "Scarlett",
+				LastName = "Amancia",
 				Address = null,
 				Phone = null
 			}

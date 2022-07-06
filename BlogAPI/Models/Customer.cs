@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace BlogServer.Models;
+namespace BlogAPI.Models;
 
 public class Customer
 {

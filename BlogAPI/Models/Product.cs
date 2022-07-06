@@ -1,8 +1,8 @@
-namespace BlogAPI.Models;
+// namespace BlogAPI.Models;
 
-public class Product
-{
-	public int Id { get; set; }
-	public string Name { get; set; } = null!;
-	public decimal Price { get; set; }
-}
+// public class Product
+// {
+// 	public int Id { get; set; }
+// 	public string Name { get; set; } = null!;
+// 	public decimal Price { get; set; }
+// }
