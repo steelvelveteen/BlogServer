@@ -1,9 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace BlogAPI.Models;
+namespace BlogServer.Models;
 
 public class Customer
 {
+	[Key]
+	[Required]
 	public int Id { get; set; }
 
 	[Required]
