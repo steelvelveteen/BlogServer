@@ -4,6 +4,8 @@ namespace BlogAPI.Models;
 
 public class Customer
 {
+	[Key]
+	[Required]
 	public int Id { get; set; }
 
 	[Required]

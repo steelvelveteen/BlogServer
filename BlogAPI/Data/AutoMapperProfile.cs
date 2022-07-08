@@ -1,4 +1,5 @@
 using AutoMapper;
+using BlogAPI.DTOs;
 using BlogAPI.Models;
 
 namespace BlogAPI.Data;
@@ -9,7 +10,9 @@ public class AutoMapperProfile : Profile
 	{
 		// Example of map
 		// CreateMap<sourceModel, destinationModel>();
-		CreateMap<Customer, Customer>();
+		CreateMap<Customer, CustomerReadDto>();
+		CreateMap<CustomerUpdateDto, Customer>();
+		CreateMap<CustomerCreateDto, Customer>();
 
 		// Example with condition
 		// CreateMap<EditFlightModel, Flight>()
