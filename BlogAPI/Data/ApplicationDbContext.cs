@@ -15,7 +15,7 @@ public class ApplicationDbContext : DbContext
 		modelBuilder.Entity<Customer>().HasData(
 			new Customer
 			{
-				Id = 11111,
+				Id = 1,
 				FirstName = "Bradley",
 				LastName = "Cooper",
 				Address = null,
@@ -23,7 +23,7 @@ public class ApplicationDbContext : DbContext
 			},
 			new Customer
 			{
-				Id = 22222,
+				Id = 2,
 				FirstName = "Sonoya",
 				LastName = "Mizuno",
 				Address = null,
@@ -31,7 +31,7 @@ public class ApplicationDbContext : DbContext
 			},
 			new Customer
 			{
-				Id = 33333,
+				Id = 3,
 				FirstName = "John",
 				LastName = "Wick",
 				Address = null,
@@ -39,7 +39,7 @@ public class ApplicationDbContext : DbContext
 			},
 			new Customer
 			{
-				Id = 99999,
+				Id = 4,
 				FirstName = "Mary Elise",
 				LastName = "Windstead",
 				Address = "154 Road, NYC 90454",
@@ -47,7 +47,7 @@ public class ApplicationDbContext : DbContext
 			},
 			new Customer
 			{
-				Id = 66777,
+				Id = 5,
 				FirstName = "Scarlett",
 				LastName = "Amancia",
 				Address = null,
