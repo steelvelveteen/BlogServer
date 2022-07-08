@@ -30,10 +30,11 @@ namespace BlogAPI.Data.Migrations
                 columns: new[] { "Id", "Address", "FirstName", "LastName", "Phone" },
                 values: new object[,]
                 {
-                    { 11111, null, "Bradley", "Cooper", null },
-                    { 22222, null, "Sonoya", "Mizuno", null },
-                    { 33333, null, "John", "Wick", null },
-                    { 99999, "154 Road, NYC 90454", "Mary Elise", "Windstead", null }
+                    { 1, null, "Bradley", "Cooper", null },
+                    { 2, null, "Sonoya", "Mizuno", null },
+                    { 3, null, "John", "Wick", null },
+                    { 4, "154 Road, NYC 90454", "Mary Elise", "Windstead", null },
+                    { 5, null, "Scarlett", "Amancia", null }
                 });
         }
 

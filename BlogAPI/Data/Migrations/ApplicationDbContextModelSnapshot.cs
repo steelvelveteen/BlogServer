@@ -50,32 +50,32 @@ namespace BlogAPI.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 11111,
+                            Id = 1,
                             FirstName = "Bradley",
                             LastName = "Cooper"
                         },
                         new
                         {
-                            Id = 22222,
+                            Id = 2,
                             FirstName = "Sonoya",
                             LastName = "Mizuno"
                         },
                         new
                         {
-                            Id = 33333,
+                            Id = 3,
                             FirstName = "John",
                             LastName = "Wick"
                         },
                         new
                         {
-                            Id = 99999,
+                            Id = 4,
                             Address = "154 Road, NYC 90454",
                             FirstName = "Mary Elise",
                             LastName = "Windstead"
                         },
                         new
                         {
-                            Id = 66777,
+                            Id = 5,
                             FirstName = "Scarlett",
                             LastName = "Amancia"
                         });
