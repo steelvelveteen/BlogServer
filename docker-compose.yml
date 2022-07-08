@@ -4,14 +4,14 @@ version: '3.4'
 
 services:
   blogapi:
-    image: blogapidock:v1
-    depends_on:
-      - 'postgres_database'
     build:
       context: .
       dockerfile: BlogAPI/Dockerfile
+    depends_on:
+      - 'postgres_database'
     ports:
       - 8080:80
+
   postgres_database:
     image: postgres
     ports:
@@ -22,7 +22,7 @@ services:
     environment:
       POSTGRES_USER: 'postgres'
       POSTGRES_PASSWORD: 'loki74'
-      POSTGRES_DB: 'NurembergDb'
+      POSTGRES_DB: 'BlogDb'
 
 volumes:
   db_volume:
