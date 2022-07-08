@@ -60,23 +60,23 @@ public class CustomerController : ControllerBase
 	/// <summary>
 	/// Updates existing customer
 	/// </summary>
-	/// <param name="c">The customer dto object to update.</param>
+	/// <param name="customerUpdateDto">The customer dto object to update.</param>
 	/// <returns>The updated object</returns>
 	/// <response code="200">Returns the modified customer</response>
 	/// <response code="404">If the customer is not found in the db in the first place</response>
 	[HttpPut]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult<Customer>> Put(CustomerUpdateDto c)
+	public async Task<ActionResult<Customer>> Put(CustomerUpdateDto customerUpdateDto)
 	{
-		var customer = await _dbContext.Customers.FindAsync(c.Id);
+		var customer = await _dbContext.Customers.FindAsync(customerUpdateDto.Id);
 		if (customer == null)
 		{
 			return NotFound("Customer not found");
 		}
 		else
 		{
-			_mapper.Map<CustomerUpdateDto, Customer>(c, customer);
+			_mapper.Map<CustomerUpdateDto, Customer>(customerUpdateDto, customer);
 		}
 
 		await _dbContext.SaveChangesAsync();
@@ -113,7 +113,7 @@ public class CustomerController : ControllerBase
 	/// Creates a new customer and saves it to db
 	/// </summary>
 	/// <returns>The newly created customer dto</returns>
-	/// <response code="200">Returns the new customer dto</response>
+	/// <response code="201">Returns the newly created customer dto</response>
 	/// <response code="409">Returns conflict error if customer already exists in db.</response>
 	[HttpPost]
 	[ProducesResponseType(StatusCodes.Status200OK)]
