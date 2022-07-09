@@ -4,9 +4,27 @@ version: '3.4'
 
 services:
   blogapi:
-    image: blogapi
     build:
       context: .
       dockerfile: BlogAPI/Dockerfile
+    depends_on:
+      - 'postgres_database'
     ports:
       - 8080:80
+    environment:
+      - 'ConnectionStrings:BlogApiConnectionString=Server=postgres_database;Database=BlogDb;Port=5432;User Id=postgres;Password=loki74'
+
+  postgres_database:
+    image: postgres
+    ports:
+      - '5432:5432'
+    restart: always
+    volumes:
+      - db_volume:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'loki74'
+      POSTGRES_DB: 'BlogDb'
+
+volumes:
+  db_volume:
