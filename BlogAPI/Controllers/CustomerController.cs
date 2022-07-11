@@ -15,16 +15,19 @@ public class CustomerController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly IMapper _mapper;
+    private readonly IRepository _repository;
 
-	/// <summary>
-	/// Initializes a new instance of the CustomerController class.
-	/// </summary>
-	/// <param name="dbContext"></param>
-	/// <param name="mapper"></param>
-	public CustomerController(ApplicationDbContext dbContext, IMapper mapper)
+    /// <summary>
+    /// Initializes a new instance of the CustomerController class.
+    /// </summary>
+    /// <param name="dbContext"></param>
+    /// <param name="mapper"></param>
+    /// <param name="repository"></param>
+    public CustomerController(ApplicationDbContext dbContext, IMapper mapper, IRepository repository)
 	{
 		_dbContext = dbContext;
 		_mapper = mapper;
+		_repository = repository;
 	}
 
 	/// <summary>
@@ -35,9 +38,10 @@ public class CustomerController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public async Task<ActionResult<IEnumerable<CustomerReadDto>>> Get()
 	{
-		var result = await _dbContext.Customers.ToListAsync();
+        // var result = await _dbContext.Customers.ToListAsync();
+        var result = await _repository.GetCustomers();
 
-		return Ok(_mapper.Map<IEnumerable<CustomerReadDto>>(result));
+        return Ok(_mapper.Map<IEnumerable<CustomerReadDto>>(result));
 
 	}
 
