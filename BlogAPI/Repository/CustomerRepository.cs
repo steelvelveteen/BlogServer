@@ -3,11 +3,11 @@ using BlogAPI.DTOs;
 using BlogAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
-public class Repository : IRepository
+public class CustomerRepository : ICustomerRepository
 {
     private readonly ApplicationDbContext _dbContext;
 
-    public Repository(ApplicationDbContext dbContext)
+    public CustomerRepository(ApplicationDbContext dbContext)
     {
         _dbContext = dbContext;
     }

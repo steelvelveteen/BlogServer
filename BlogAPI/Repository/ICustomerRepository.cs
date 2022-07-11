@@ -2,7 +2,7 @@
 using BlogAPI.DTOs;
 using BlogAPI.Models;
 
-public interface IRepository
+public interface ICustomerRepository
 {
     Task<IEnumerable<Customer>> GetCustomers();
     Task<CustomerReadDto> GetCustomerById(int Id);

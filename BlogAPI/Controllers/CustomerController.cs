@@ -4,8 +4,6 @@ using BlogAPI.Data;
 using BlogAPI.DTOs;
 using BlogAPI.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-
 namespace BlogAPI.Controllers;
 
 [ApiController]
@@ -15,7 +13,7 @@ public class CustomerController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly IMapper _mapper;
-    private readonly IRepository _repository;
+    private readonly ICustomerRepository _repository;
 
     /// <summary>
     /// Initializes a new instance of the CustomerController class.
@@ -23,7 +21,7 @@ public class CustomerController : ControllerBase
     /// <param name="dbContext"></param>
     /// <param name="mapper"></param>
     /// <param name="repository"></param>
-    public CustomerController(ApplicationDbContext dbContext, IMapper mapper, IRepository repository)
+    public CustomerController(ApplicationDbContext dbContext, IMapper mapper, ICustomerRepository repository)
 	{
 		_dbContext = dbContext;
 		_mapper = mapper;
