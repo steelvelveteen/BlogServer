@@ -67,7 +67,7 @@ public class CustomerController : ControllerBase
 	[HttpPut]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult<Customer>> Put(CustomerUpdateDto customerUpdateDto)
+	public async Task<ActionResult<CustomerReadDto>> Put(CustomerUpdateDto customerUpdateDto)
 	{
 		var customer = await _dbContext.Customers.FindAsync(customerUpdateDto.Id);
 
@@ -81,7 +81,8 @@ public class CustomerController : ControllerBase
 		}
 
 		await _dbContext.SaveChangesAsync();
-		return Ok(customer);
+
+		return Ok(_mapper.Map<Customer, CustomerReadDto>(customer, new CustomerReadDto()));
 	}
 
 	/// <summary>
