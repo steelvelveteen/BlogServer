@@ -1,3 +1,4 @@
+using AutoMapper;
 using BlogAPI.Data;
 using BlogAPI.DTOs;
 using BlogAPI.Models;
@@ -6,10 +7,12 @@ using Microsoft.EntityFrameworkCore;
 public class CustomerRepository : ICustomerRepository
 {
 	private readonly ApplicationDbContext _dbContext;
+	private readonly IMapper _mapper;
 
-	public CustomerRepository(ApplicationDbContext dbContext)
+	public CustomerRepository(ApplicationDbContext dbContext, IMapper mapper)
 	{
 		_dbContext = dbContext;
+		_mapper = mapper;
 	}
 
 	public async Task<IEnumerable<Customer>> GetCustomers()
@@ -25,9 +28,14 @@ public class CustomerRepository : ICustomerRepository
 		return customer;
 	}
 
-	public Task<Customer> CreateCustomer(CustomerCreateDto customerCreateDto)
+	public async Task<Customer> CreateCustomer(CustomerCreateDto customerCreateDto)
 	{
-		throw new NotImplementedException();
+		var customer = _mapper.Map<Customer>(customerCreateDto);
+
+		_dbContext.Add(customer);
+		await _dbContext.SaveChangesAsync();
+
+		return customer;
 	}
 
 	public void DeleteCustomer(int Id)

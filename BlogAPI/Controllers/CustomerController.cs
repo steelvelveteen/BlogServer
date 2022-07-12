@@ -125,12 +125,9 @@ public class CustomerController : ControllerBase
 		var customerInDb = await _dbContext.Customers.FindAsync(customerCreateDto.Id);
 		if (customerInDb != null) return Conflict("Customer already exists in db.");
 
-		var customerModel = _mapper.Map<Customer>(customerCreateDto);
+		var customer = await _repository.CreateCustomer(customerCreateDto);
 
-		_dbContext.Customers.Add(customerModel);
-		await _dbContext.SaveChangesAsync();
-
-		var customerReadDto = _mapper.Map<CustomerReadDto>(customerModel);
+		var customerReadDto = _mapper.Map<CustomerReadDto>(customer);
 
 		return CreatedAtRoute(nameof(GetCustomerById), new { Id = customerReadDto.Id }, customerReadDto);
 	}
