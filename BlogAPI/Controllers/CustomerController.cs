@@ -122,7 +122,7 @@ public class CustomerController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status409Conflict)]
 	public async Task<ActionResult<Customer>> Post(CustomerCreateDto customerCreateDto)
 	{
-		var customerInDb = await _dbContext.Customers.FindAsync(customerCreateDto.Id);
+		var customerInDb = await _repository.GetCustomerById(customerCreateDto.Id);
 		if (customerInDb != null) return Conflict("Customer already exists in db.");
 
 		var customer = await _repository.CreateCustomer(customerCreateDto);
