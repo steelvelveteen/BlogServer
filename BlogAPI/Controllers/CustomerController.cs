@@ -1,4 +1,3 @@
-using System.Net;
 using BlogServer.Data;
 using BlogServer.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -20,13 +19,15 @@ public class CustomerController : ControllerBase
 	public async Task<ActionResult<IEnumerable<Customer>>> Get()
 	{
 		var result = await _dbContext.Customers.ToListAsync();
+
 		return Ok(result);
 	}
 
-	[HttpGet("{Id}")]
-	public async Task<ActionResult<Customer>> Get(int Id)
+	[HttpGet("{Id}", Name = "GetCustomerById")]
+	public async Task<ActionResult<Customer>> GetCustomerById(int Id)
 	{
 		var customer = await _dbContext.Customers.FindAsync(Id);
+
 		return Ok(customer);
 	}
 
@@ -34,6 +35,7 @@ public class CustomerController : ControllerBase
 	public async Task<ActionResult<Customer>> Put(Customer c)
 	{
 		var customer = await _dbContext.Customers.FindAsync(c.Id);
+
 		if (customer == null)
 		{
 			return NotFound("Customer not found");
@@ -48,6 +50,7 @@ public class CustomerController : ControllerBase
 		}
 
 		await _dbContext.SaveChangesAsync();
+
 		return Ok(customer);
 	}
 
@@ -55,9 +58,9 @@ public class CustomerController : ControllerBase
 	public async Task<ActionResult> Delete(int Id)
 	{
 		var customer = await _dbContext.Customers.FindAsync(Id);
+
 		if (customer == null)
 		{
-
 			return NotFound("Customer not found.");
 		}
 		else
@@ -66,6 +69,7 @@ public class CustomerController : ControllerBase
 		}
 
 		await _dbContext.SaveChangesAsync();
+
 		return Ok("Customer deleted from db.");
 	}
 
@@ -73,9 +77,12 @@ public class CustomerController : ControllerBase
 	public async Task<ActionResult<Customer>> Post(Customer customer)
 	{
 		var customerInDb = await _dbContext.Customers.FindAsync(customer.Id);
+
 		if (customerInDb != null) return Conflict("Customer already exists in db.");
 		_dbContext.Customers.Add(customer);
+
 		await _dbContext.SaveChangesAsync();
+
 		return Ok(customer);
 	}
 }
