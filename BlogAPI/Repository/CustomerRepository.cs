@@ -18,9 +18,11 @@ public class CustomerRepository : ICustomerRepository
 		return result;
 	}
 
-	public Task<CustomerReadDto> GetCustomerById(int Id)
+	public async Task<Customer?> GetCustomerById(int Id)
 	{
-		throw new NotImplementedException();
+		var customer = await _dbContext.Customers.FindAsync(Id);
+
+		return customer;
 	}
 
 	public Task<Customer> CreateCustomer(CustomerCreateDto customerCreateDto)

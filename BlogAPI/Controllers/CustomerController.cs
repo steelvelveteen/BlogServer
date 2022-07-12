@@ -45,6 +45,7 @@ public class CustomerController : ControllerBase
 	/// <summary>
 	/// Fetches a single customer
 	/// </summary>
+	/// <param name="Id">The Id of the customer we want to fetch</param>
 	/// <response code="200">Returns the customer dto</response>
 	/// <response code="404">If customer is not found in database</response>
 	[HttpGet("{Id}", Name = "GetCustomerById")]
