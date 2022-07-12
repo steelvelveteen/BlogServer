@@ -28,18 +28,18 @@ public class CustomerRepository : ICustomerRepository
 		return customer;
 	}
 
+	public async Task DeleteCustomer(Customer customer)
+	{
+		_dbContext.Remove(customer);
+		await _dbContext.SaveChangesAsync();
+	}
+
 	public async Task<Customer> CreateCustomer(Customer customer)
 	{
 		_dbContext.Add(customer);
 		await _dbContext.SaveChangesAsync();
 
 		return customer;
-	}
-
-	public async Task DeleteCustomer(Customer customer)
-	{
-		_dbContext.Remove(customer);
-		await _dbContext.SaveChangesAsync();
 	}
 
 	public async Task<Customer?> UpdateCustomer(CustomerUpdateDto customerUpdateDto)
