@@ -117,17 +117,18 @@ public class CustomerController : ControllerBase
 	public async Task<ActionResult<Customer>> Post(CustomerCreateDto customerCreateDto)
 	{
 		var customerInDb = await _repository.GetCustomerById(customerCreateDto.Id);
-		if (customerInDb is null)
+		if (customerInDb is not null)
+		{
+			return Conflict("Customer already exists in db.");
+		}
+		else
 		{
 			var customer = await _repository.CreateCustomer(_mapper.Map<Customer>(customerCreateDto));
 
 			var customerReadDto = _mapper.Map<CustomerReadDto>(customer);
 
 			return CreatedAtRoute(nameof(GetCustomerById), new { Id = customerReadDto.Id }, customerReadDto);
-		}
-		else
-		{
-			return Conflict("Customer already exists in db.");
+
 		}
 	}
 }
