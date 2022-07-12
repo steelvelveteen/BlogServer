@@ -13,15 +13,15 @@ public class CustomerController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly IMapper _mapper;
-    private readonly ICustomerRepository _repository;
+	private readonly ICustomerRepository _repository;
 
-    /// <summary>
-    /// Initializes a new instance of the CustomerController class.
-    /// </summary>
-    /// <param name="dbContext"></param>
-    /// <param name="mapper"></param>
-    /// <param name="repository"></param>
-    public CustomerController(ApplicationDbContext dbContext, IMapper mapper, ICustomerRepository repository)
+	/// <summary>
+	/// Initializes a new instance of the CustomerController class.
+	/// </summary>
+	/// <param name="dbContext"></param>
+	/// <param name="mapper"></param>
+	/// <param name="repository"></param>
+	public CustomerController(ApplicationDbContext dbContext, IMapper mapper, ICustomerRepository repository)
 	{
 		_dbContext = dbContext;
 		_mapper = mapper;
@@ -36,10 +36,9 @@ public class CustomerController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public async Task<ActionResult<IEnumerable<CustomerReadDto>>> Get()
 	{
-        // var result = await _dbContext.Customers.ToListAsync();
-        var result = await _repository.GetCustomers();
+		var result = await _repository.GetCustomers();
 
-        return Ok(_mapper.Map<IEnumerable<CustomerReadDto>>(result));
+		return Ok(_mapper.Map<IEnumerable<CustomerReadDto>>(result));
 
 	}
 
@@ -53,7 +52,7 @@ public class CustomerController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<CustomerReadDto>> GetCustomerById(int Id)
 	{
-		var customer = await _dbContext.Customers.FindAsync(Id);
+		var customer = await _repository.GetCustomerById(Id);
 		if (customer == null) return NotFound("Customer not found");
 
 		return Ok(_mapper.Map<CustomerReadDto>(customer));
