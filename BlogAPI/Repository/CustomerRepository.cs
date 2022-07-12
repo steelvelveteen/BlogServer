@@ -28,10 +28,8 @@ public class CustomerRepository : ICustomerRepository
 		return customer;
 	}
 
-	public async Task<Customer> CreateCustomer(CustomerCreateDto customerCreateDto)
+	public async Task<Customer> CreateCustomer(Customer customer)
 	{
-		var customer = _mapper.Map<Customer>(customerCreateDto);
-
 		_dbContext.Add(customer);
 		await _dbContext.SaveChangesAsync();
 
