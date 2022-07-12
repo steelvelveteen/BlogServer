@@ -70,6 +70,7 @@ public class CustomerController : ControllerBase
 	public async Task<ActionResult<Customer>> Put(CustomerUpdateDto customerUpdateDto)
 	{
 		var customer = await _dbContext.Customers.FindAsync(customerUpdateDto.Id);
+
 		if (customer == null)
 		{
 			return NotFound("Customer not found");
@@ -121,6 +122,7 @@ public class CustomerController : ControllerBase
 	public async Task<ActionResult<Customer>> Post(CustomerCreateDto customerCreateDto)
 	{
 		var customerInDb = await _dbContext.Customers.FindAsync(customerCreateDto.Id);
+
 		if (customerInDb != null) return Conflict("Customer already exists in db.");
 
 		var customerModel = _mapper.Map<Customer>(customerCreateDto);
