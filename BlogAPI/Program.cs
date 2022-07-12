@@ -14,8 +14,7 @@ builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 // Application DbContext configuration section
 builder.Services.AddDbContext<ApplicationDbContext>(
-	// options => options.UseSqlite(@"DataSource=test.db"));
-	options => options.UseNpgsql(builder.Configuration.GetConnectionString("BlogApiConnectionString")));
+	options => options.UseSqlite(@"DataSource=test.db"));
 
 builder.Services.AddEndpointsApiExplorer();
 
