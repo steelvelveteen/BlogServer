@@ -71,18 +71,15 @@ public class CustomerController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<Customer>> Put(CustomerUpdateDto customerUpdateDto)
 	{
-		var customer = await _dbContext.Customers.FindAsync(customerUpdateDto.Id);
-		if (customer == null)
+		var customerInDb = await _dbContext.Customers.FindAsync(customerUpdateDto.Id);
+		if (customerInDb == null)
 		{
 			return NotFound("Customer not found");
 		}
-		else
-		{
-			_mapper.Map<CustomerUpdateDto, Customer>(customerUpdateDto, customer);
-		}
 
-		await _dbContext.SaveChangesAsync();
-		return Ok(customer);
+		var customerUpdated = await _repository.UpdateCustomer(customerUpdateDto);
+
+		return Ok(customerUpdated);
 	}
 
 	/// <summary>
@@ -97,17 +94,14 @@ public class CustomerController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> Delete([Required] int Id)
 	{
-		var customer = await _dbContext.Customers.FindAsync(Id);
-		if (customer == null)
+		var customerInDb = await _repository.GetCustomerById(Id);
+		if (customerInDb == null)
 		{
 			return NotFound("Customer not found.");
 		}
-		else
-		{
-			_dbContext.Customers.Remove(customer);
-		}
 
-		await _dbContext.SaveChangesAsync();
+		await _repository.DeleteCustomer(customerInDb);
+
 		return Ok("Customer deleted from db.");
 	}
 

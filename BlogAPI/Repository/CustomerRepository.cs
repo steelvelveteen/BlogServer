@@ -38,8 +38,22 @@ public class CustomerRepository : ICustomerRepository
 		return customer;
 	}
 
-	public void DeleteCustomer(int Id)
+	public async Task DeleteCustomer(Customer customer)
 	{
-		throw new NotImplementedException();
+		_dbContext.Remove(customer);
+		await _dbContext.SaveChangesAsync();
+	}
+
+	public async Task<Customer?> UpdateCustomer(CustomerUpdateDto customerUpdateDto)
+	{
+		var customerInDb = _dbContext.Customers.Find(customerUpdateDto.Id);
+		Customer? customerUpdated = null;
+
+		if (customerInDb is not null)
+		{
+			customerUpdated = _mapper.Map<CustomerUpdateDto, Customer>(customerUpdateDto, customerInDb);
+		}
+		await _dbContext.SaveChangesAsync();
+		return customerUpdated;
 	}
 }
