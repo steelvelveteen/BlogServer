@@ -120,7 +120,7 @@ public class CustomerController : ControllerBase
 	[HttpPost]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status409Conflict)]
-	public async Task<ActionResult<Customer>> Post(CustomerCreateDto customerCreateDto)
+	public async Task<ActionResult<CustomerReadDto>> Post(CustomerCreateDto customerCreateDto)
 	{
 		var customerInDb = await _dbContext.Customers.FindAsync(customerCreateDto.Id);
 
