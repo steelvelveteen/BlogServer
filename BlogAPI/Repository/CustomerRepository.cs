@@ -13,7 +13,7 @@ public class CustomerRepository : ICustomerRepository
 
 	public async Task<IEnumerable<Customer>> GetCustomers()
 	{
-		var result = await _dbContext.Customers.ToListAsync();
+		var result = await _dbContext.Customers.AsNoTracking().ToListAsync();
 
 		return result;
 	}
@@ -41,12 +41,10 @@ public class CustomerRepository : ICustomerRepository
 
 	public async Task<Customer?> UpdateCustomer(Customer customerUpdate)
 	{
-		var customer = await _dbContext.Customers.AsNoTracking().SingleOrDefaultAsync(c => c.Id == customerUpdate.Id);
-
 		_dbContext.Customers.Update(customerUpdate);
 
 		await _dbContext.SaveChangesAsync();
 
-		return customer;
+		return customerUpdate;
 	}
 }
