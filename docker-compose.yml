@@ -1,6 +1,6 @@
 # Please refer https://aka.ms/HTTPSinContainer on how to setup an https developer certificate for your ASP .NET Core service.
 
-version: '3.4'
+version: "3.4"
 
 services:
   blogapi:
@@ -8,23 +8,23 @@ services:
       context: .
       dockerfile: BlogAPI/Dockerfile
     depends_on:
-      - 'postgres_database'
+      - "postgres_database"
     ports:
       - 8080:80
     environment:
-      - 'ConnectionStrings:BlogApiConnectionString=Server=postgres_database;Database=BlogDb;Port=5432;User Id=postgres;Password=loki74'
+      - "ConnectionStrings:BlogApiConnectionString=Server=postgres_database;Database=BlogDb;Port=5432;User Id=postgres;Password=loki74"
 
   postgres_database:
     image: postgres
     ports:
-      - '5432:5432'
+      - "5432"
     restart: always
     volumes:
       - db_volume:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: 'postgres'
-      POSTGRES_PASSWORD: 'loki74'
-      POSTGRES_DB: 'BlogDb'
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "loki74"
+      POSTGRES_DB: "BlogDb"
 
 volumes:
   db_volume:
