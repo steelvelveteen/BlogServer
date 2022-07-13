@@ -41,12 +41,12 @@ public class CustomerRepository : ICustomerRepository
 
 	public async Task<Customer?> UpdateCustomer(Customer customerUpdate)
 	{
-		var customerInDb = await _dbContext.Customers.AsNoTracking().SingleOrDefaultAsync(c => c.Id == customerUpdate.Id);
+		var customer = await _dbContext.Customers.AsNoTracking().SingleOrDefaultAsync(c => c.Id == customerUpdate.Id);
 
 		_dbContext.Customers.Update(customerUpdate);
 
 		await _dbContext.SaveChangesAsync();
 
-		return customerInDb;
+		return customer;
 	}
 }
