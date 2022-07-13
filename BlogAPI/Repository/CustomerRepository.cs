@@ -45,12 +45,12 @@ public class CustomerRepository : ICustomerRepository
 		return customer;
 	}
 
-	public async Task<Customer?> UpdateCustomer(Customer customerUpdate)
+	public async Task<Customer?> UpdateCustomer(Customer updatedCustomer)
 	{
-		_dbContext.Customers.Update(customerUpdate);
+		_dbContext.Customers.Update( updatedCustomer);
 
 		await _dbContext.SaveChangesAsync();
 
-		return customerUpdate;
+		return updatedCustomer;
 	}
 }
