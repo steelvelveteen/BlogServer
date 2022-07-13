@@ -67,9 +67,10 @@ public class CustomerController : ControllerBase
 	[HttpPut]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult<Customer>> Put(CustomerUpdateDto customerUpdateDto)
+	public async Task<ActionResult<CustomerReadDto>> Put(CustomerUpdateDto customerUpdateDto)
 	{
 		var customer = await _dbContext.Customers.FindAsync(customerUpdateDto.Id);
+
 		if (customer == null)
 		{
 			return NotFound("Customer not found");
@@ -80,7 +81,8 @@ public class CustomerController : ControllerBase
 		}
 
 		await _dbContext.SaveChangesAsync();
-		return Ok(customer);
+
+		return Ok(_mapper.Map<Customer, CustomerReadDto>(customer, new CustomerReadDto()));
 	}
 
 	/// <summary>
@@ -118,9 +120,10 @@ public class CustomerController : ControllerBase
 	[HttpPost]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status409Conflict)]
-	public async Task<ActionResult<Customer>> Post(CustomerCreateDto customerCreateDto)
+	public async Task<ActionResult<CustomerReadDto>> Post(CustomerCreateDto customerCreateDto)
 	{
 		var customerInDb = await _dbContext.Customers.FindAsync(customerCreateDto.Id);
+
 		if (customerInDb != null) return Conflict("Customer already exists in db.");
 
 		var customerModel = _mapper.Map<Customer>(customerCreateDto);
