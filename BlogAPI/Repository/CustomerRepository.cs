@@ -1,18 +1,14 @@
-using AutoMapper;
 using BlogAPI.Data;
-using BlogAPI.DTOs;
 using BlogAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
 public class CustomerRepository : ICustomerRepository
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly IMapper _mapper;
 
-	public CustomerRepository(ApplicationDbContext dbContext, IMapper mapper)
+	public CustomerRepository(ApplicationDbContext dbContext)
 	{
 		_dbContext = dbContext;
-		_mapper = mapper;
 	}
 
 	public async Task<IEnumerable<Customer>> GetCustomers()
@@ -45,17 +41,12 @@ public class CustomerRepository : ICustomerRepository
 
 	public async Task<Customer?> UpdateCustomer(Customer customerUpdate)
 	{
-		Customer? customerUpdated = null;
-
 		var customerInDb = await _dbContext.Customers.AsNoTracking().SingleOrDefaultAsync(c => c.Id == customerUpdate.Id);
 
-		if (customerInDb is not null)
-		{
-			customerUpdated = _mapper.Map<Customer, Customer>(customerUpdate, customerInDb);
-		}
 		_dbContext.Customers.Update(customerUpdate);
+
 		await _dbContext.SaveChangesAsync();
 
-		return customerUpdated;
+		return customerInDb;
 	}
 }

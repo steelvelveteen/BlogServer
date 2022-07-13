@@ -1,5 +1,3 @@
-
-using BlogAPI.DTOs;
 using BlogAPI.Models;
 
 public interface ICustomerRepository
@@ -10,5 +8,4 @@ public interface ICustomerRepository
 	Task<Customer> CreateCustomer(Customer customer);
 
 	Task<Customer?> UpdateCustomer(Customer customerUpdateDto);
-
 }
