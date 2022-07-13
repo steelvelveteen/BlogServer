@@ -18,12 +18,13 @@ public class CustomerRepository : ICustomerRepository
 	public async Task<IEnumerable<Customer>> GetCustomers()
 	{
 		var result = await _dbContext.Customers.ToListAsync();
+
 		return result;
 	}
 
 	public async Task<Customer?> GetCustomerById(int Id)
 	{
-		var customer = await _dbContext.Customers.FindAsync(Id);
+		var customer = await _dbContext.Customers.AsNoTracking().SingleOrDefaultAsync(c => c.Id == Id);
 
 		return customer;
 	}
@@ -42,16 +43,19 @@ public class CustomerRepository : ICustomerRepository
 		return customer;
 	}
 
-	public async Task<Customer?> UpdateCustomer(CustomerUpdateDto customerUpdateDto)
+	public async Task<Customer?> UpdateCustomer(Customer customerUpdate)
 	{
-		var customerInDb = _dbContext.Customers.Find(customerUpdateDto.Id);
 		Customer? customerUpdated = null;
+
+		var customerInDb = await _dbContext.Customers.AsNoTracking().SingleOrDefaultAsync(c => c.Id == customerUpdate.Id);
 
 		if (customerInDb is not null)
 		{
-			customerUpdated = _mapper.Map<CustomerUpdateDto, Customer>(customerUpdateDto, customerInDb);
+			customerUpdated = _mapper.Map<Customer, Customer>(customerUpdate, customerInDb);
 		}
+		_dbContext.Customers.Update(customerUpdate);
 		await _dbContext.SaveChangesAsync();
+
 		return customerUpdated;
 	}
 }

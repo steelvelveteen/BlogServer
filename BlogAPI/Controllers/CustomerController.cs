@@ -105,9 +105,7 @@ public class CustomerController : ControllerBase
 			var customerReadDto = _mapper.Map<CustomerReadDto>(customer);
 
 			return CreatedAtRoute(nameof(GetCustomerById), new { Id = customerReadDto.Id }, customerReadDto);
-
 		}
-
 	}
 
 	/// <summary>
@@ -129,8 +127,11 @@ public class CustomerController : ControllerBase
 			return NotFound("Customer not found");
 		}
 
-		var customerUpdated = await _repository.UpdateCustomer(customerUpdateDto);
+		var customer = _mapper.Map<CustomerUpdateDto, Customer>(customerUpdateDto);
 
-		return Ok(customerUpdated);
+		var customerUpdated = await _repository.UpdateCustomer(customer);
+
+		var customerUpdatedDto = _mapper.Map<CustomerReadDto>(customerUpdated);
+		return Ok(customerUpdateDto);
 	}
 }

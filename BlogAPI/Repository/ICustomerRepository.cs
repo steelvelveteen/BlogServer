@@ -9,6 +9,6 @@ public interface ICustomerRepository
 	Task DeleteCustomer(Customer customer);
 	Task<Customer> CreateCustomer(Customer customer);
 
-	Task<Customer?> UpdateCustomer(CustomerUpdateDto customerUpdateDto);
+	Task<Customer?> UpdateCustomer(Customer customerUpdateDto);
 
 }
