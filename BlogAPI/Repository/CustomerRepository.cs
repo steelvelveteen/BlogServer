@@ -48,7 +48,6 @@ public class CustomerRepository : ICustomerRepository
 	public async Task<Customer?> UpdateCustomer(Customer customerUpdate)
 	{
 		_dbContext.Customers.Update(customerUpdate);
-
 		await _dbContext.SaveChangesAsync();
 
 		return customerUpdate;
