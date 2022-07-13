@@ -13,14 +13,20 @@ public class CustomerRepository : ICustomerRepository
 
 	public async Task<IEnumerable<Customer>> GetCustomers()
 	{
-		var result = await _dbContext.Customers.AsNoTracking().ToListAsync();
+		var result = await _dbContext
+		.Customers
+		.AsNoTracking().
+		ToListAsync();
 
 		return result;
 	}
 
 	public async Task<Customer?> GetCustomerById(int Id)
 	{
-		var customer = await _dbContext.Customers.AsNoTracking().SingleOrDefaultAsync(c => c.Id == Id);
+		var customer = await _dbContext
+		.Customers
+		.AsNoTracking()
+		.SingleOrDefaultAsync(c => c.Id == Id);
 
 		return customer;
 	}
