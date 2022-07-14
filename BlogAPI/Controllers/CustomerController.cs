@@ -140,6 +140,7 @@ public class CustomerController : ControllerBase
 		var customerUpdated = await _repository.UpdateCustomer(customer);
 
 		var customerUpdatedDto = _mapper.Map<CustomerReadDto>(customerUpdated);
+
 		return Ok(customerUpdateDto);
 	}
 }
