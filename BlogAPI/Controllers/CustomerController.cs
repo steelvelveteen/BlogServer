@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using BlogAPI.DTOs;
 using BlogAPI.Models;
+using BlogAPI.Repository;
 using Microsoft.AspNetCore.Mvc;
 namespace BlogAPI.Controllers;
 

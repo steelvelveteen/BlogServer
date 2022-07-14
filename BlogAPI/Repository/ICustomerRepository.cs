@@ -1,5 +1,7 @@
 using BlogAPI.Models;
 
+namespace BlogAPI.Repository;
+
 public interface ICustomerRepository
 {
 	Task<IEnumerable<Customer>> GetCustomers();

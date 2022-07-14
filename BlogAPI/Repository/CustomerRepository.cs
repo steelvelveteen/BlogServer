@@ -2,6 +2,8 @@ using BlogAPI.Data;
 using BlogAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
+namespace BlogAPI.Repository;
+
 public class CustomerRepository : ICustomerRepository
 {
 	private readonly ApplicationDbContext _dbContext;
