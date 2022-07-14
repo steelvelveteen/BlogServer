@@ -17,7 +17,7 @@ services:
   postgres_database:
     image: postgres
     ports:
-      - "5432"
+      - "5432:5432"
     restart: always
     volumes:
       - db_volume:/var/lib/postgresql/data
