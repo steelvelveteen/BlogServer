@@ -29,7 +29,7 @@ public class CustomerController : ControllerBase
 	/// </summary>
 	/// <response code="200">Returns a list of customer dtos</response>
 	[HttpGet]
-	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(typeof(List<CustomerReadDto>),StatusCodes.Status200OK)]
 	public async Task<ActionResult<IEnumerable<CustomerReadDto>>> Get()
 	{
 		var customers = await _repository.GetCustomers();
@@ -47,8 +47,8 @@ public class CustomerController : ControllerBase
 	/// <response code="404">If customer is not found in database</response>
 	[HttpGet("{Id}", Name = "GetCustomerById")]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	[ProducesResponseType(StatusCodes.Status200OK)]
-	[ProducesResponseType(typeof(CustomerReadDto), StatusCodes.Status404NotFound)]
+	[ProducesResponseType(typeof(CustomerReadDto),StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<CustomerReadDto>> GetCustomerById([Required] int Id)
 	{
 		if (Id <= 0) return BadRequest();
@@ -96,7 +96,7 @@ public class CustomerController : ControllerBase
 	/// <response code="201">Returns the newly created customer dto</response>
 	/// <response code="409">Returns conflict error if customer already exists in db.</response>
 	[HttpPost]
-	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(typeof(CustomerReadDto),StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status409Conflict)]
 	public async Task<ActionResult<CustomerReadDto>> Post(CustomerCreateDto customerCreateDto)
 	{
@@ -124,9 +124,9 @@ public class CustomerController : ControllerBase
 	/// <response code="200">Returns the modified customer</response>
 	/// <response code="404">If the customer to be updated is not found in the db in the first place</response>
 	[HttpPut]
-	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(typeof(CustomerReadDto),StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult<Customer>> Put(CustomerUpdateDto customerUpdateDto)
+	public async Task<ActionResult<CustomerReadDto>> Put(CustomerUpdateDto customerUpdateDto)
 	{
 		var customerInDb = await _repository.GetCustomerById(customerUpdateDto.Id);
 
@@ -141,6 +141,6 @@ public class CustomerController : ControllerBase
 
 		var customerUpdatedDto = _mapper.Map<CustomerReadDto>(customerUpdated);
 
-		return Ok(customerUpdateDto);
+		return Ok(customerUpdatedDto);
 	}
 }
