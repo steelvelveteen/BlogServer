@@ -42,7 +42,7 @@ public class CustomerController : ControllerBase
 
 		if (customer == null)
 		{
-			return NotFound("Customer not found");
+			return NotFound();
 		}
 		else
 		{
@@ -87,6 +87,6 @@ public class CustomerController : ControllerBase
 
 		await _dbContext.SaveChangesAsync();
 
-		return customer;
+		return CreatedAtAction(nameof(GetCustomerById), new { Id = customer.Id }, customer);
 	}
 }
