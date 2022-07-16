@@ -20,19 +20,23 @@ public class CustomerController : ControllerBase
 	{
 		var result = await _dbContext.Customers.ToListAsync();
 
-		return Ok(result);
+		return result;
 	}
 
 	[HttpGet("{Id}", Name = "GetCustomerById")]
 	public async Task<ActionResult<Customer>> GetCustomerById(int Id)
 	{
 		var customer = await _dbContext.Customers.FindAsync(Id);
+		if (customer is null)
+		{
+			return NotFound();
+		}
 
-		return Ok(customer);
+		return customer;
 	}
 
-	[HttpPut]
-	public async Task<ActionResult<Customer>> Put(Customer c)
+	[HttpPut("{Id}")]
+	public async Task<ActionResult> Put(int Id, Customer c)
 	{
 		var customer = await _dbContext.Customers.FindAsync(c.Id);
 
@@ -51,7 +55,7 @@ public class CustomerController : ControllerBase
 
 		await _dbContext.SaveChangesAsync();
 
-		return Ok(customer);
+		return NoContent();
 	}
 
 	[HttpDelete("{Id}")]
@@ -83,6 +87,6 @@ public class CustomerController : ControllerBase
 
 		await _dbContext.SaveChangesAsync();
 
-		return Ok(customer);
+		return customer;
 	}
 }
