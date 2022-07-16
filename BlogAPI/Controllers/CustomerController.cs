@@ -75,12 +75,12 @@ public class CustomerController : ControllerBase
 		{
 			return NotFound("Customer not found");
 		}
-		// else
-		// {
-		// 	_mapper.Map<CustomerUpdateDto, Customer>(customerUpdateDto, customer);
-		// }
+		else
+		{
+			_mapper.Map<CustomerUpdateDto, Customer>(customerUpdateDto, customer);
+		}
 
-		// await _dbContext.SaveChangesAsync();
+		await _dbContext.SaveChangesAsync();
         // return customer;
         return NoContent();
     }
