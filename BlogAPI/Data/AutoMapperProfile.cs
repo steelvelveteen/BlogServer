@@ -10,9 +10,9 @@ public class AutoMapperProfile : Profile
 	{
 		// Example of map
 		// CreateMap<sourceModel, destinationModel>();
-		CreateMap<Customer, CustomerReadDto>()
+		CreateMap<Customer, CustomerReadDto>();
+		CreateMap<CustomerUpdateDto, Customer>()
 		.ForMember(m => m.Id, opt => opt.Ignore());
-		CreateMap<CustomerUpdateDto, Customer>();
 		CreateMap<CustomerCreateDto, Customer>();
 
 		// Example with condition

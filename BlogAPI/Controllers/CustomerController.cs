@@ -127,6 +127,8 @@ public class CustomerController : ControllerBase
 	{
 		var customerInDb = await _dbContext.Customers.SingleOrDefaultAsync(c => c.FirstName == customerCreateDto.FirstName && c.LastName == customerCreateDto.LastName);
 
+		if (customerInDb is not null) return Conflict("Customer already exists in db");
+
 		var customerModel = _mapper.Map<Customer>(customerCreateDto);
 
 		_dbContext.Customers.Add(customerModel);
