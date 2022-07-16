@@ -14,11 +14,5 @@ public class AutoMapperProfile : Profile
 		CreateMap<CustomerUpdateDto, Customer>()
 		.ForMember(m => m.Id, opt => opt.Ignore());
 		CreateMap<CustomerCreateDto, Customer>();
-
-		// Example with condition
-		// CreateMap<EditFlightModel, Flight>()
-		//   .ForAllMembers(opts => opts.Condition((src, //dest, srcMember) => srcMember != null));
-
-		//   .ForMember(dest => dest.PaymentMethodNonce, opt => opt.MapFrom(src => src.Nonce));
 	}
 }
