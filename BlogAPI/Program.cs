@@ -3,6 +3,7 @@ using BlogAPI.Data;
 using Serilog;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +37,16 @@ builder.Services.AddSwaggerGen(options =>
 
 });
 
+// Cors configuration
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy("CorsPolicy", builder =>
+	builder
+	.AllowAnyOrigin()
+	.AllowAnyMethod()
+	.AllowAnyHeader());
+});
+
 // Serilog
 builder.Host.UseSerilog((ctx, lc) =>
 	lc.WriteTo.Console()
@@ -46,10 +57,20 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
 	app.UseSwagger();
-	app.UseSwaggerUI();
+	app.UseSwaggerUI(options =>
+	{
+		options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+		options.RoutePrefix = string.Empty;
+	});
 }
 
+app.UseCors("CorsPolicy");
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+	ForwardedHeaders = ForwardedHeaders.All
+});
 app.UseHttpsRedirection();
+
 
 app.UseAuthorization();
 
