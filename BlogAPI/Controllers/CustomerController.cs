@@ -60,28 +60,30 @@ public class CustomerController : ControllerBase
 	/// <summary>
 	/// Updates existing customer
 	/// </summary>
+	/// <param name="Id">The Id of the customer to be updated</param>
 	/// <param name="customerUpdateDto">The customer dto object to update.</param>
 	/// <returns>The updated object</returns>
 	/// <response code="200">Returns the modified customer</response>
 	/// <response code="404">If the customer is not found in the db in the first place</response>
-	[HttpPut]
-	[ProducesResponseType(StatusCodes.Status200OK)]
+	[HttpPut("{Id}")]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult<Customer>> Put(CustomerUpdateDto customerUpdateDto)
+	public async Task<ActionResult> Put(int Id, CustomerUpdateDto customerUpdateDto)
 	{
-		var customer = await _dbContext.Customers.FindAsync(customerUpdateDto.Id);
+		var customer = await _dbContext.Customers.FindAsync(Id);
 		if (customer == null)
 		{
 			return NotFound("Customer not found");
 		}
-		else
-		{
-			_mapper.Map<CustomerUpdateDto, Customer>(customerUpdateDto, customer);
-		}
+		// else
+		// {
+		// 	_mapper.Map<CustomerUpdateDto, Customer>(customerUpdateDto, customer);
+		// }
 
-		await _dbContext.SaveChangesAsync();
-		return Ok(customer);
-	}
+		// await _dbContext.SaveChangesAsync();
+        // return customer;
+        return NoContent();
+    }
 
 	/// <summary>
 	/// Deletes a specific Customer
