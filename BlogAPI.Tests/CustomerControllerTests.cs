@@ -13,7 +13,7 @@ namespace BlogAPI.Tests;
 public class CustomerControllerTests
 {
     // private readonly Mock<IMapper> mapperStub = new();
-    private static IMapper _mapper;
+    private static IMapper _mapper = null!;
     private readonly Mock<ICustomerRepository> repositoryStub = new();
 	 public CustomerControllerTests()
         {
@@ -53,27 +53,20 @@ public class CustomerControllerTests
 		var expectedCustomer = new Customer
 		{
 			Id = 1,
-			FirstName = "Test",
-			LastName = "Last Test",
+			FirstName = "Test First Name",
+			LastName = "Test Last Name",
 			Address = "",
 			Phone = "8994545112"
 		};
 
 		repositoryStub
 		.Setup(repo => repo.GetCustomerById(It.IsAny<Int32>()))
-		.ReturnsAsync(new Customer {
-			Id = 1,
-			FirstName = "Test 1 First",
-			LastName = "Test Last",
-			Address = "",
-			Phone = "89887983"
-		});
+		.ReturnsAsync(expectedCustomer);
 
 		var controller = new CustomerController(_mapper, repositoryStub.Object);
 
 		// Act
 		var result = await controller.GetCustomerById(1);
-		var okObjResult = result.Result as OkObjectResult;
 
 		// Assert
 		Assert.IsType<CustomerReadDto>(result.Value);
