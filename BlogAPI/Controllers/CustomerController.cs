@@ -35,9 +35,11 @@ public class CustomerController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public async Task<ActionResult<IEnumerable<CustomerReadDto>>> Get()
 	{
-		var result = await _dbContext.Customers.ToListAsync();
+		var customers = await _dbContext.Customers.ToListAsync();
 
-		return Ok(_mapper.Map<IEnumerable<CustomerReadDto>>(result));
+		var result = _mapper.Map<IEnumerable<CustomerReadDto>>(customers);
+
+		return result.ToList();
 
 	}
 
@@ -54,7 +56,8 @@ public class CustomerController : ControllerBase
 		var customer = await _dbContext.Customers.FindAsync(Id);
 		if (customer == null) return NotFound("Customer not found");
 
-		return Ok(_mapper.Map<CustomerReadDto>(customer));
+		var customerReadDto = _mapper.Map<CustomerReadDto>(customer);
+		return customerReadDto;
 	}
 
 	/// <summary>
@@ -81,9 +84,9 @@ public class CustomerController : ControllerBase
 		}
 
 		await _dbContext.SaveChangesAsync();
-        // return customer;
-        return NoContent();
-    }
+
+		return NoContent();
+	}
 
 	/// <summary>
 	/// Deletes a specific Customer
@@ -108,7 +111,7 @@ public class CustomerController : ControllerBase
 		}
 
 		await _dbContext.SaveChangesAsync();
-		return Ok("Customer deleted from db.");
+		return NoContent();
 	}
 
 	/// <summary>
@@ -122,8 +125,7 @@ public class CustomerController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status409Conflict)]
 	public async Task<ActionResult<Customer>> Post(CustomerCreateDto customerCreateDto)
 	{
-		// var customerInDb = await _dbContext.Customers.FindAsync(customerCreateDto.Id);
-		// if (customerInDb != null) return Conflict("Customer already exists in db.");
+		var customerInDb = await _dbContext.Customers.SingleOrDefaultAsync(c => c.FirstName == customerCreateDto.FirstName && c.LastName == customerCreateDto.LastName);
 
 		var customerModel = _mapper.Map<Customer>(customerCreateDto);
 
