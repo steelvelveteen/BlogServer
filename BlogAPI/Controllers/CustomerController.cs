@@ -120,8 +120,8 @@ public class CustomerController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status409Conflict)]
 	public async Task<ActionResult<Customer>> Post(CustomerCreateDto customerCreateDto)
 	{
-		var customerInDb = await _dbContext.Customers.FindAsync(customerCreateDto.Id);
-		if (customerInDb != null) return Conflict("Customer already exists in db.");
+		// var customerInDb = await _dbContext.Customers.FindAsync(customerCreateDto.Id);
+		// if (customerInDb != null) return Conflict("Customer already exists in db.");
 
 		var customerModel = _mapper.Map<Customer>(customerCreateDto);
 
