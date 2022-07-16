@@ -23,7 +23,7 @@ public class CustomerController : ControllerBase
 	{
 		var result = await _dbContext.Customers.ToListAsync();
 
-		return Ok(result);
+		return result;
 	}
 
 	[HttpGet("{Id}", Name = "GetCustomerById")]
@@ -33,28 +33,35 @@ public class CustomerController : ControllerBase
 
 		if (customer == null) return NotFound("Customer not found");
 
-		return Ok(customer);
+		return customer;
 	}
 
-	[HttpPut]
-	public async Task<ActionResult<Customer>> Put(Customer c)
+	[HttpPut("{Id}")]
+	public async Task<ActionResult> Put(int Id, Customer c)
 	{
-		var customer = await _dbContext.Customers.FindAsync(c.Id);
+		var customer = await _dbContext.Customers.FindAsync(Id);
+
 		if (customer == null)
-			return NotFound("Customer not found");
-		_mapper.Map<Customer, Customer>(c, customer);
+		{
+			return NotFound();
+		}
+		else
+		{
+			_mapper.Map<Customer, Customer>(c, customer);
+		}
 
 		await _dbContext.SaveChangesAsync();
-		return Ok(customer);
+
+		return NoContent();
 	}
 
 	[HttpDelete("{Id}")]
 	public async Task<ActionResult> Delete(int Id)
 	{
 		var customer = await _dbContext.Customers.FindAsync(Id);
+
 		if (customer == null)
 		{
-
 			return NotFound("Customer not found.");
 		}
 		else
@@ -63,19 +70,20 @@ public class CustomerController : ControllerBase
 		}
 
 		await _dbContext.SaveChangesAsync();
-		return Ok("Customer deleted from db.");
+
+		return NoContent();
 	}
 
 	[HttpPost]
 	public async Task<ActionResult<Customer>> Post(Customer customer)
 	{
-		var customerInDb = await _dbContext.Customers.FindAsync(customer.Id);
+		var customerInDb = await _dbContext.Customers.SingleOrDefaultAsync(c => c.FirstName == customer.FirstName && c.LastName == customer.LastName);
 
 		if (customerInDb != null) return Conflict("Customer already exists in db.");
-
 		_dbContext.Customers.Add(customer);
+
 		await _dbContext.SaveChangesAsync();
 
-		return CreatedAtRoute(nameof(GetCustomerById), new { Id = customer.Id }, customer);
+		return CreatedAtAction(nameof(GetCustomerById), new { Id = customer.Id }, customer);
 	}
 }

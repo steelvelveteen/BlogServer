@@ -10,39 +10,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogAPI.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220628055045_createProductsTable")]
-    partial class createProductsTable
+    [Migration("20220716160200_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.1");
-
-            modelBuilder.Entity("BlogAPI.Models.Product", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Products");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 901,
-                            Name = "Vorkwerk Thermomix",
-                            Price = 3500m
-                        });
-                });
 
             modelBuilder.Entity("BlogServer.Models.Customer", b =>
                 {
@@ -71,19 +45,19 @@ namespace BlogAPI.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 11111,
+                            Id = 1,
                             FirstName = "Bradley",
                             LastName = "Cooper"
                         },
                         new
                         {
-                            Id = 22222,
+                            Id = 2,
                             FirstName = "Sonoya",
                             LastName = "Mizuno"
                         },
                         new
                         {
-                            Id = 33333,
+                            Id = 3,
                             FirstName = "John",
                             LastName = "Wick"
                         });
