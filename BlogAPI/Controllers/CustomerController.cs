@@ -38,7 +38,7 @@ public class CustomerController : ControllerBase
 	[HttpPut("{Id}")]
 	public async Task<ActionResult> Put(int Id, Customer c)
 	{
-		var customer = await _dbContext.Customers.FindAsync(c.Id);
+		var customer = await _dbContext.Customers.FindAsync(Id);
 
 		if (customer == null)
 		{
@@ -46,7 +46,7 @@ public class CustomerController : ControllerBase
 		}
 		else
 		{
-			customer.Id = c.Id;
+			// customer.Id = c.Id;
 			customer.FirstName = c.FirstName;
 			customer.LastName = c.LastName;
 			customer.Address = c.Address;
@@ -74,7 +74,7 @@ public class CustomerController : ControllerBase
 
 		await _dbContext.SaveChangesAsync();
 
-		return Ok("Customer deleted from db.");
+		return NoContent();
 	}
 
 	[HttpPost]
