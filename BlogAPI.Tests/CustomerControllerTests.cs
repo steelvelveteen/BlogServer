@@ -54,11 +54,26 @@ public class CustomerControllerTests
 
 		// Act
 		var result = await controller.GetCustomerById(1);
-		var okObjResult = result.Result;
+		var okObjResult = result.Result as OkObjectResult;
 
 		// Assert
 		Assert.IsType<OkObjectResult>(okObjResult);
+	}
 
-		// Assert.Equal(HttpStatusCode.OK, result.Result);
+	[Fact]
+	public async Task DeleteCustomer_WithUnexistingId_ReturnsNotFound()
+	{
+		// Arrange
+		repositoryStub
+		.Setup(repo => repo.DeleteCustomer(It.IsAny<Customer>()));
+
+		var controller = new CustomerController(mapperStub.Object, repositoryStub.Object);
+
+		// Act
+		var result = await controller.Delete(188);
+
+		// Assert
+		Assert.IsType<NotFoundObjectResult>(result);
+
 	}
 }
