@@ -6,14 +6,27 @@ using Microsoft.AspNetCore.Mvc;
 using BlogAPI.Models;
 using BlogAPI.DTOs;
 using System.Net;
+using BlogAPI.Data;
 
 namespace BlogAPI.Tests;
 
 public class CustomerControllerTests
 {
-	private readonly Mock<IMapper> mapperStub = new();
-	private readonly Mock<ICustomerRepository> repositoryStub = new();
-	private readonly Mock<CustomerController> controller = new();
+    // private readonly Mock<IMapper> mapperStub = new();
+    private static IMapper _mapper;
+    private readonly Mock<ICustomerRepository> repositoryStub = new();
+	 public CustomerControllerTests()
+        {
+            if (_mapper == null)
+            {
+                var mappingConfig = new MapperConfiguration(mc =>
+                {
+                    mc.AddProfile(new AutoMapperProfile());
+                });
+                IMapper mapper = mappingConfig.CreateMapper();
+                _mapper = mapper;
+            }
+        }
 
 	[Fact]
 	// Naming convention: unitOfWork_stateUnderTest_expectedBehaviour
@@ -24,7 +37,7 @@ public class CustomerControllerTests
 		.Setup(repo => repo.GetCustomerById(It.IsAny<int>()))
 		.ReturnsAsync((Customer?)null);
 
-		var controller = new CustomerController(mapperStub.Object, repositoryStub.Object);
+		var controller = new CustomerController(_mapper, repositoryStub.Object);
 
 		// Act
 		var result = await controller.GetCustomerById(9999);
@@ -37,7 +50,7 @@ public class CustomerControllerTests
 	public async Task GetCustomerById_WithExistingCustomer_ReturnsOk()
 	{
 		// Arrange
-		var customer = new Customer
+		var expectedCustomer = new Customer
 		{
 			Id = 1,
 			FirstName = "Test",
@@ -47,17 +60,23 @@ public class CustomerControllerTests
 		};
 
 		repositoryStub
-		.Setup(repo => repo.GetCustomerById(It.IsAny<int>()))
-		.ReturnsAsync(customer);
+		.Setup(repo => repo.GetCustomerById(It.IsAny<Int32>()))
+		.ReturnsAsync(new Customer {
+			Id = 1,
+			FirstName = "Test 1 First",
+			LastName = "Test Last",
+			Address = "",
+			Phone = "89887983"
+		});
 
-		var controller = new CustomerController(mapperStub.Object, repositoryStub.Object);
+		var controller = new CustomerController(_mapper, repositoryStub.Object);
 
 		// Act
 		var result = await controller.GetCustomerById(1);
 		var okObjResult = result.Result as OkObjectResult;
 
 		// Assert
-		Assert.IsType<OkObjectResult>(okObjResult);
+		Assert.IsType<CustomerReadDto>(result.Value);
 	}
 
 	[Fact]
@@ -67,7 +86,7 @@ public class CustomerControllerTests
 		repositoryStub
 		.Setup(repo => repo.DeleteCustomer(It.IsAny<Customer>()));
 
-		var controller = new CustomerController(mapperStub.Object, repositoryStub.Object);
+		var controller = new CustomerController(_mapper, repositoryStub.Object);
 
 		// Act
 		var result = await controller.Delete(188);
