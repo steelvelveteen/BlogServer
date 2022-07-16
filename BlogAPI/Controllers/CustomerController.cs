@@ -20,7 +20,7 @@ public class CustomerController : ControllerBase
 	{
 		var result = await _dbContext.Customers.ToListAsync();
 
-		return Ok(result);
+		return result;
 	}
 
 	[HttpGet("{Id}", Name = "GetCustomerById")]
@@ -28,7 +28,8 @@ public class CustomerController : ControllerBase
 	{
 		var customer = await _dbContext.Customers.FindAsync(Id);
 
-		return Ok(customer);
+		if (customer is null) return NotFound();
+        return customer;
 	}
 
 	[HttpPut]
@@ -51,7 +52,7 @@ public class CustomerController : ControllerBase
 
 		await _dbContext.SaveChangesAsync();
 
-		return Ok(customer);
+		return customer;
 	}
 
 	[HttpDelete("{Id}")]
@@ -83,6 +84,6 @@ public class CustomerController : ControllerBase
 
 		await _dbContext.SaveChangesAsync();
 
-		return Ok(customer);
+		return customer;
 	}
 }
