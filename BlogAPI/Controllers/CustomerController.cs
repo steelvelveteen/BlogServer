@@ -29,12 +29,14 @@ public class CustomerController : ControllerBase
 	/// </summary>
 	/// <response code="200">Returns a list of customer dtos</response>
 	[HttpGet]
-	[ProducesResponseType(typeof(List<CustomerReadDto>),StatusCodes.Status200OK)]
+	[ProducesResponseType(typeof(List<CustomerReadDto>), StatusCodes.Status200OK)]
 	public async Task<ActionResult<IEnumerable<CustomerReadDto>>> Get()
 	{
 		var customers = await _repository.GetCustomers();
 
-		return Ok(_mapper.Map<IEnumerable<CustomerReadDto>>(customers));
+		var result = _mapper.Map<IEnumerable<CustomerReadDto>>(customers);
+
+		return result.ToList();
 
 	}
 
@@ -47,7 +49,7 @@ public class CustomerController : ControllerBase
 	/// <response code="404">If customer is not found in database</response>
 	[HttpGet("{Id}", Name = "GetCustomerById")]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	[ProducesResponseType(typeof(CustomerReadDto),StatusCodes.Status200OK)]
+	[ProducesResponseType(typeof(CustomerReadDto), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<CustomerReadDto>> GetCustomerById([Required] int Id)
 	{
@@ -57,9 +59,37 @@ public class CustomerController : ControllerBase
 
 		if (customer == null) return NotFound("Customer not found");
 
-		return Ok(_mapper.Map<CustomerReadDto>(customer));
+		var customerReadDto = _mapper.Map<CustomerReadDto>(customer);
+		return customerReadDto;
 	}
 
+
+	/// <summary>
+	/// Updates existing customer
+	/// </summary>
+	/// <param name="Id">The Id of the customer to be updated</param>
+	/// <param name="customerUpdateDto">The customer dto object to update.</param>
+	/// <returns>The updated object</returns>
+	/// <response code="200">Returns the modified customer</response>
+	/// <response code="404">If the customer is not found in the db in the first place</response>
+	[HttpPut("{Id}")]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public async Task<ActionResult> Put(int Id, CustomerUpdateDto customerUpdateDto)
+	{
+		var customer = await _repository.GetCustomerById(Id);
+		if (customer == null)
+		{
+			return NotFound("Customer not found");
+		}
+		else
+		{
+			var updatedCustomer = _mapper.Map<CustomerUpdateDto, Customer>(customerUpdateDto, customer);
+			await _repository.UpdateCustomer(customer);
+		}
+
+		return NoContent();
+	}
 
 	/// <summary>
 	/// Deletes a specific Customer
@@ -86,7 +116,7 @@ public class CustomerController : ControllerBase
 
 		await _repository.DeleteCustomer(customerInDb);
 
-		return Ok("Customer deleted from db.");
+		return NoContent();
 	}
 
 	/// <summary>
@@ -96,15 +126,15 @@ public class CustomerController : ControllerBase
 	/// <response code="201">Returns the newly created customer dto</response>
 	/// <response code="409">Returns conflict error if customer already exists in db.</response>
 	[HttpPost]
-	[ProducesResponseType(typeof(CustomerReadDto),StatusCodes.Status200OK)]
+	[ProducesResponseType(typeof(CustomerReadDto), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status409Conflict)]
 	public async Task<ActionResult<CustomerReadDto>> Post(CustomerCreateDto customerCreateDto)
 	{
-		var customerInDb = await _repository.GetCustomerById(customerCreateDto.Id);
+		var customers = await _repository.GetCustomers();
 
-		if (customerInDb is not null)
+		if (customers.Any(c => c.FirstName == customerCreateDto.FirstName))
 		{
-			return Conflict("Customer already exists in db.");
+			return Conflict("Customer already exists  in db.");
 		}
 		else
 		{
@@ -114,33 +144,5 @@ public class CustomerController : ControllerBase
 
 			return CreatedAtRoute(nameof(GetCustomerById), new { Id = customerReadDto.Id }, customerReadDto);
 		}
-	}
-
-	/// <summary>
-	/// Updates an existing customer
-	/// </summary>
-	/// <param name="customerUpdateDto">The customer dto object to update.</param>
-	/// <returns>The updated object</returns>
-	/// <response code="200">Returns the modified customer</response>
-	/// <response code="404">If the customer to be updated is not found in the db in the first place</response>
-	[HttpPut]
-	[ProducesResponseType(typeof(CustomerReadDto),StatusCodes.Status200OK)]
-	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult<CustomerReadDto>> Put(CustomerUpdateDto customerUpdateDto)
-	{
-		var customerInDb = await _repository.GetCustomerById(customerUpdateDto.Id);
-
-		if (customerInDb == null)
-		{
-			return NotFound("Customer not found");
-		}
-
-		var customer = _mapper.Map<CustomerUpdateDto, Customer>(customerUpdateDto);
-
-		var customerUpdated = await _repository.UpdateCustomer(customer);
-
-		var customerUpdatedDto = _mapper.Map<CustomerReadDto>(customerUpdated);
-
-		return Ok(customerUpdatedDto);
 	}
 }
