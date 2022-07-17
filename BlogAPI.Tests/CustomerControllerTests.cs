@@ -7,6 +7,7 @@ using BlogAPI.Models;
 using BlogAPI.DTOs;
 using System.Net;
 using BlogAPI.Data;
+using FluentAssertions;
 
 namespace BlogAPI.Tests;
 
@@ -69,13 +70,21 @@ public class CustomerControllerTests
 
 		// Act
 		var result = await controller.GetCustomerById(1);
-		var okObjectResult = result.Result as OkObjectResult;
-		var actual = okObjectResult?.Value;
+		// var okObjectResult = result.Result as OkObjectResult;
+		// var actual = okObjectResult?.Value;
 
 		// Assert
-		// Assert.IsType<CustomerReadDto>(actual);
-		Assert.IsType<CustomerReadDto>(result.Value);
-		// Assert.IsType<OkObjectResult>(okObjectResult);
+		// Installed FluentAssertions v6.7.0
+
+		result.Value.Should().BeEquivalentTo(expectedCustomer, options => options.ComparingByMembers<Customer>());
+
+		// Assert.IsType<CustomerReadDto>(result.Value);
+		// var dto = (result as ActionResult<CustomerReadDto>).Value;
+		// Assert.Equal(expectedCustomer.Id, dto.Id);
+		// Assert.Equal(expectedCustomer.FirstName, dto.FirstName);
+		// Assert.Equal(expectedCustomer.LastName, dto.LastName);
+		// Assert.Equal(expectedCustomer.Address, dto.Address);
+		// Assert.Equal(expectedCustomer.Phone, dto.Phone);
 	}
 
 	[Fact]
