@@ -61,6 +61,7 @@ public class CustomerController : ControllerBase
 		if (customer == null) return NotFound("Customer not found");
 
 		var customerReadDto = _mapper.Map<CustomerReadDto>(customer);
+
 		return customerReadDto;
 	}
 

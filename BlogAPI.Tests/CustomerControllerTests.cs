@@ -12,21 +12,21 @@ namespace BlogAPI.Tests;
 
 public class CustomerControllerTests
 {
-    // private readonly Mock<IMapper> mapperStub = new();
-    private static IMapper _mapper = null!;
-    private readonly Mock<ICustomerRepository> repositoryStub = new();
-	 public CustomerControllerTests()
-        {
-            if (_mapper == null)
-            {
-                var mappingConfig = new MapperConfiguration(mc =>
-                {
-                    mc.AddProfile(new AutoMapperProfile());
-                });
-                IMapper mapper = mappingConfig.CreateMapper();
-                _mapper = mapper;
-            }
-        }
+	// private readonly Mock<IMapper> mapperStub = new();
+	private static IMapper _mapper = null!;
+	private readonly Mock<ICustomerRepository> repositoryStub = new();
+	public CustomerControllerTests()
+	{
+		if (_mapper == null)
+		{
+			var mappingConfig = new MapperConfiguration(mc =>
+			{
+				mc.AddProfile(new AutoMapperProfile());
+			});
+			IMapper mapper = mappingConfig.CreateMapper();
+			_mapper = mapper;
+		}
+	}
 
 	[Fact]
 	// Naming convention: unitOfWork_stateUnderTest_expectedBehaviour
@@ -41,6 +41,8 @@ public class CustomerControllerTests
 
 		// Act
 		var result = await controller.GetCustomerById(9999);
+		var okObjectResult = result.Result as OkObjectResult;
+		var actual = result.Value;
 
 		// Assert
 		Assert.IsType<NotFoundObjectResult>(result.Result);
@@ -67,9 +69,13 @@ public class CustomerControllerTests
 
 		// Act
 		var result = await controller.GetCustomerById(1);
+		var okObjectResult = result.Result as OkObjectResult;
+		var actual = okObjectResult?.Value;
 
 		// Assert
+		// Assert.IsType<CustomerReadDto>(actual);
 		Assert.IsType<CustomerReadDto>(result.Value);
+		// Assert.IsType<OkObjectResult>(okObjectResult);
 	}
 
 	[Fact]
