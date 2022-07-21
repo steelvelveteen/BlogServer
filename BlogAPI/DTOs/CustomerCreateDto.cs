@@ -4,6 +4,7 @@ namespace BlogAPI.DTOs;
 
 public class CustomerCreateDto
 {
+
 	[Required]
 	public string FirstName { get; set; } = null!;
 
