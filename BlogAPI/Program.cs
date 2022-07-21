@@ -5,7 +5,6 @@ using Serilog;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using Microsoft.AspNetCore.HttpOverrides;
-using BlogAPI.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
