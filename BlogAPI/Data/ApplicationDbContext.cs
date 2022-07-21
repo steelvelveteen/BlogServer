@@ -55,6 +55,6 @@ public class ApplicationDbContext : DbContext
 			}
 		);
 
-		modelBuilder.Entity<Customer>(customer => customer.Property(e => e.Id).IsRequired().ValueGeneratedOnAdd());
+		// modelBuilder.Entity<Customer>(customer => customer.Property(e => e.Id).IsRequired().ValueGeneratedOnAdd());
 	}
 }
