@@ -116,7 +116,7 @@ public class CustomerController : ControllerBase
 			return NotFound("Customer not found.");
 		}
 
-		await _repository.DeleteCustomer(Id);
+		await _repository.DeleteCustomer(customerInDb.Id);
 
 		return NoContent();
 	}
