@@ -27,26 +27,6 @@ public class CustomerControllerTests
 	}
 
 	[Fact]
-	// Naming convention: unitOfWork_stateUnderTest_expectedBehaviour
-	public async Task GetCustomerById_withUnexistingCustomerId_ReturnsNotFound()
-	{
-		// Arrange
-		repositoryStub
-		.Setup(repo => repo.GetCustomerById(It.IsAny<int>()))
-		.ReturnsAsync((Customer?)null);
-
-		var controller = new CustomerController(_mapper, repositoryStub.Object);
-
-		// Act
-		var result = await controller.GetCustomerById(9999);
-		var okObjectResult = result.Result as OkObjectResult;
-		var actual = result.Value;
-
-		// Assert
-		Assert.IsType<NotFoundObjectResult>(result.Result);
-	}
-
-	[Fact]
 	public async Task GetCustomerById_WithExistingCustomer_ReturnsOk()
 	{
 		// Arrange
@@ -74,30 +54,50 @@ public class CustomerControllerTests
 		// Installed FluentAssertions v6.7.0
 
 		result.Value.Should().BeEquivalentTo(expectedCustomer, options => options.ComparingByMembers<Customer>());
-
-		// Assert.IsType<CustomerReadDto>(result.Value);
-		// var dto = (result as ActionResult<CustomerReadDto>).Value;
-		// Assert.Equal(expectedCustomer.Id, dto.Id);
-		// Assert.Equal(expectedCustomer.FirstName, dto.FirstName);
-		// Assert.Equal(expectedCustomer.LastName, dto.LastName);
-		// Assert.Equal(expectedCustomer.Address, dto.Address);
-		// Assert.Equal(expectedCustomer.Phone, dto.Phone);
 	}
 
 	[Fact]
-	public async Task DeleteCustomer_WithUnexistingId_ReturnsNotFound()
+	public async Task GetCustomerById_WithUnexistingCustomerId_ReturnsNotFound()
 	{
 		// Arrange
 		repositoryStub
-		.Setup(repo => repo.DeleteCustomer(It.IsAny<Customer>()));
+		.Setup(repo => repo.GetCustomerById(It.IsAny<int>()))
+		.ReturnsAsync((Customer?)null);
 
 		var controller = new CustomerController(_mapper, repositoryStub.Object);
 
 		// Act
-		var result = await controller.Delete(188);
+		var result = await controller.GetCustomerById(9999);
 
 		// Assert
-		Assert.IsType<NotFoundObjectResult>(result);
+		result.Value.Should().BeNull();
+		result.Result.Should().BeOfType<NotFoundObjectResult>();
+	}
 
+
+	[Fact]
+	public async Task DeleteCustomer_WithExistingId_NoContent()
+	{
+		// Arrange
+		var customerToDelete = new Customer
+		{
+			Id = 188,
+			FirstName = "Test First Name",
+			LastName = "Test Last Name",
+			Address = "",
+			Phone = "8994545112"
+		};
+
+		repositoryStub
+		.Setup(repo => repo.GetCustomerById(It.IsAny<Int32>()))
+		.ReturnsAsync(customerToDelete);
+
+		var controller = new CustomerController(_mapper, repositoryStub.Object);
+
+		// Act
+		var result = await controller.Delete(customerToDelete.Id);
+
+		// Assert
+		result.Should().BeOfType<NoContentResult>();
 	}
 }

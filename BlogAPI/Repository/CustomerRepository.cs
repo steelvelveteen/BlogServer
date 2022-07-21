@@ -33,9 +33,14 @@ public class CustomerRepository : ICustomerRepository
 		return customer;
 	}
 
-	public async Task DeleteCustomer(Customer customer)
+	public async Task DeleteCustomer(int Id)
 	{
-		_dbContext.Remove(customer);
+		// _dbContext.Remove(customer);
+		var customerInDb = _dbContext.Customers.Find(Id);
+
+		if (customerInDb is not null)
+			_dbContext.Remove(customerInDb);
+
 		await _dbContext.SaveChangesAsync();
 	}
 
