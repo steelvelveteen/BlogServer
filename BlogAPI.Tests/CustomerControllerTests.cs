@@ -4,8 +4,6 @@ using AutoMapper;
 using BlogAPI.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using BlogAPI.Models;
-using BlogAPI.DTOs;
-using System.Net;
 using BlogAPI.Data;
 using FluentAssertions;
 
@@ -13,7 +11,6 @@ namespace BlogAPI.Tests;
 
 public class CustomerControllerTests
 {
-	// private readonly Mock<IMapper> mapperStub = new();
 	private static IMapper _mapper = null!;
 	private readonly Mock<ICustomerRepository> repositoryStub = new();
 	public CustomerControllerTests()
