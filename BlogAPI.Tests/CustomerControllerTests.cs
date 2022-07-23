@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using BlogAPI.Models;
 using BlogAPI.Data;
 using FluentAssertions;
+using BlogAPI.DTOs;
 
 namespace BlogAPI.Tests;
 
@@ -126,15 +127,57 @@ public class CustomerControllerTests
 				LastName = "Last name 3"
 			}
 		};
+
 		repositoryStub.Setup(repo => repo.GetCustomers()).ReturnsAsync(customers);
 
 		var controller = new CustomerController(_mapper, repositoryStub.Object);
+
 		// Act
 		var result = await controller.Get();
 
 		// Assert
 		result.Value.Should().BeEquivalentTo(customers, options => options.ComparingByMembers<Customer>());
-		// result.Value.Should().BeEquivalentTo(expectedCustomer, options => options.ComparingByMembers<Customer>());
+	}
 
+	[Fact]
+	public async Task CreateCustomer_WithCustomerToCreate_Returns()
+	{
+		// Arrange
+		var newCustomer = new CustomerCreateDto
+		{
+			FirstName = "New First Name",
+			LastName = "New Last Name",
+			Address = null,
+			Phone = "898908900"
+		};
+		var cust = new Customer
+		{
+			Id = 66,
+			FirstName = "New First Name",
+			LastName = "New Last Name",
+			Address = null,
+			Phone = "898908900"
+
+		};
+
+		repositoryStub.Setup(repo => repo.CreateCustomer(It.IsAny<Customer>())).ReturnsAsync(cust);
+
+		var controller = new CustomerController(_mapper, repositoryStub.Object);
+
+		// Act
+		var result = await controller.Post(newCustomer);
+
+		// Assert
+		var objectResult = result.Result as CreatedAtRouteResult;
+		var createdItem = objectResult?.Value as CustomerReadDto;
+
+		newCustomer.Should().BeEquivalentTo(createdItem,
+		options => options.ComparingByMembers<CustomerReadDto>().ExcludingMissingMembers());
+
+		if (createdItem is not null)
+		{
+			createdItem.Id.Should().NotBe(null);
+			createdItem.FirstName.Should().BeEquivalentTo(newCustomer.FirstName);
+		}
 	}
 }
