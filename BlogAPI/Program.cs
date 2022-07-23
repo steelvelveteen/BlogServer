@@ -37,6 +37,7 @@ builder.Services.AddSwaggerGen(options =>
 
 });
 
+builder.Services.AddHealthChecks();
 // Cors configuration
 builder.Services.AddCors(options =>
 {
@@ -71,10 +72,16 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 });
 app.UseHttpsRedirection();
 
-
+app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHealthChecks("/health");
+});
+
 
 using (var scope = app.Services.CreateScope())
 {
