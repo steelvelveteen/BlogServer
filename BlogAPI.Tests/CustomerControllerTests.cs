@@ -100,4 +100,41 @@ public class CustomerControllerTests
 		// Assert
 		result.Should().BeOfType<NoContentResult>();
 	}
+
+	[Fact]
+	public async Task GetAllCustomers_WithExistingCustomers_ReturnsAllCustomers()
+	{
+		// Arrange
+		var customers = new List<Customer>
+		{
+			new Customer
+			{
+				Id = 1,
+				FirstName = "First name 1",
+				LastName = "Last name 1"
+			},
+			new Customer
+			{
+				Id = 2,
+				FirstName = "First name 2",
+				LastName = "Last name 2"
+			},
+			new Customer
+			{
+				Id = 3,
+				FirstName = "First name 3",
+				LastName = "Last name 3"
+			}
+		};
+		repositoryStub.Setup(repo => repo.GetCustomers()).ReturnsAsync(customers);
+
+		var controller = new CustomerController(_mapper, repositoryStub.Object);
+		// Act
+		var result = await controller.Get();
+
+		// Assert
+		result.Value.Should().BeEquivalentTo(customers, options => options.ComparingByMembers<Customer>());
+		// result.Value.Should().BeEquivalentTo(expectedCustomer, options => options.ComparingByMembers<Customer>());
+
+	}
 }
