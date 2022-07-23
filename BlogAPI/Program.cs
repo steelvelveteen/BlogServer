@@ -72,7 +72,6 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 });
 app.UseHttpsRedirection();
 
-
 app.UseAuthorization();
 
 app.MapControllers();
