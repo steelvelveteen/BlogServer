@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using BlogAPI.Data;
+using BlogAPI.Repository;
 using Serilog;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
@@ -70,7 +71,6 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 	ForwardedHeaders = ForwardedHeaders.All
 });
 app.UseHttpsRedirection();
-
 
 app.UseAuthorization();
 

@@ -54,5 +54,7 @@ public class ApplicationDbContext : DbContext
 				Phone = null
 			}
 		);
+
+		// modelBuilder.Entity<Customer>(customer => customer.Property(e => e.Id).IsRequired().ValueGeneratedOnAdd());
 	}
 }

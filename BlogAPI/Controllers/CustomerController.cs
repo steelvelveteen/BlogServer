@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using BlogAPI.DTOs;
 using BlogAPI.Models;
+using BlogAPI.Repository;
 using Microsoft.AspNetCore.Mvc;
 namespace BlogAPI.Controllers;
 
@@ -60,6 +61,7 @@ public class CustomerController : ControllerBase
 		if (customer == null) return NotFound("Customer not found");
 
 		var customerReadDto = _mapper.Map<CustomerReadDto>(customer);
+
 		return customerReadDto;
 	}
 
@@ -114,7 +116,7 @@ public class CustomerController : ControllerBase
 			return NotFound("Customer not found.");
 		}
 
-		await _repository.DeleteCustomer(customerInDb);
+		await _repository.DeleteCustomer(customerInDb.Id);
 
 		return NoContent();
 	}
