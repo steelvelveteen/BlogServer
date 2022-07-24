@@ -48,11 +48,6 @@ public class CustomerControllerTests
 
 		// Act
 		var result = await controller.GetCustomerById(1);
-		// var okObjectResult = result.Result as OkObjectResult;
-		// var actual = okObjectResult?.Value;
-
-		// Assert
-		// Installed FluentAssertions v6.7.0
 
 		result.Value.Should().BeEquivalentTo(expectedCustomer, options => options.ComparingByMembers<Customer>());
 	}
@@ -150,7 +145,7 @@ public class CustomerControllerTests
 			Address = null,
 			Phone = "898908900"
 		};
-		var cust = new Customer
+		var c = new Customer
 		{
 			Id = 66,
 			FirstName = "New First Name",
@@ -160,7 +155,7 @@ public class CustomerControllerTests
 
 		};
 
-		repositoryStub.Setup(repo => repo.CreateCustomer(It.IsAny<Customer>())).ReturnsAsync(cust);
+		repositoryStub.Setup(repo => repo.CreateCustomer(It.IsAny<Customer>())).ReturnsAsync(c);
 
 		var controller = new CustomerController(_mapper, repositoryStub.Object);
 
@@ -172,12 +167,45 @@ public class CustomerControllerTests
 		var createdItem = objectResult?.Value as CustomerReadDto;
 
 		newCustomer.Should().BeEquivalentTo(createdItem,
-		options => options.ComparingByMembers<CustomerReadDto>().ExcludingMissingMembers());
+		options => options.ComparingByMembers<Customer>().ExcludingMissingMembers());
 
 		if (createdItem is not null)
-		{
 			createdItem.Id.Should().NotBe(null);
-			createdItem.FirstName.Should().BeEquivalentTo(newCustomer.FirstName);
-		}
+	}
+
+	[Fact]
+	public async Task UpdateCustomer_WithExistingCustomer_ReturnsNoContent()
+	{
+		// Arrange
+		// First fetch existing customer
+		var existingCustomer = new Customer
+		{
+			Id = 1,
+			FirstName = "Test First Name",
+			LastName = "Test Last Name",
+			Address = "",
+			Phone = "8994545112"
+		};
+
+		repositoryStub
+		.Setup(repo => repo.GetCustomerById(It.IsAny<Int32>()))
+		.ReturnsAsync(existingCustomer);
+
+		var customerId = existingCustomer.Id;
+		var customerToUpdate = new CustomerUpdateDto
+		{
+			FirstName = "Name updated",
+			LastName = "Lastname updated",
+			Address = "Random address",
+			Phone = "8994545112"
+		};
+
+		var controller = new CustomerController(_mapper, repositoryStub.Object);
+
+		// Act
+		var result = await controller.Put(customerId, customerToUpdate);
+
+		// Assert
+		result.Should().BeOfType<NoContentResult>();
 	}
 }
