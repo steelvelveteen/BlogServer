@@ -3,8 +3,8 @@
 // using System.Linq;
 // using System.Threading.Tasks;
 
-// namespace YourProject.Data
-// {
+// namespace BlogAPI.Database;
+
 // 	public class EntityFrameworkDatabase<T> : IDatabase<T> where T : class
 // 	{
 // 		private readonly DbContext _dbContext;
@@ -42,4 +42,3 @@
 // 			await _dbContext.SaveChangesAsync();
 // 		}
 // 	}
-// }

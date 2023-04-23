@@ -4,8 +4,8 @@
 // using System.Threading.Tasks;
 // using Dapper;
 
-// namespace YourProject.Data
-// {
+// namespace BlogAPI.Database;
+
 // 	public class DapperDatabase<T> : IDatabase<T> where T : class
 // 	{
 // 		private readonly IDbConnection _dbConnection;
@@ -43,4 +43,3 @@
 // 			await _dbConnection.ExecuteAsync(sql, entity);
 // 		}
 // 	}
-// }
